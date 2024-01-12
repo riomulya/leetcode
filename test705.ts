@@ -64,7 +64,9 @@ class MyHashSet {
                 if (current.key === key) return;
                 current = current.next;
             }
-            current.next = new LinkedListNode<boolean>(key, true);
+            if (current.key !== key) {
+                current.next = new LinkedListNode<boolean>(key, true);
+            }
         }
     }
 
@@ -113,3 +115,4 @@ class LinkedListNode<T> {
         this.next = null;
     }
 }
+
