@@ -1,28 +1,48 @@
-// Definisi linked list node
-class ListNode {
-  constructor(val, next = null) {
-    this.val = val;
-    this.next = next;
+type ToBeOrNotToBe = {
+  toBe: (val: any) => boolean;
+  notToBe: (val: any) => boolean;
+};
+
+function expect(val: any): ToBeOrNotToBe {
+  return {
+    toBe: (expectedVal: any) => {
+      if (val !== expectedVal) {
+        throw new Error("Not Equal");
+      } else {
+        return true;
+      }
+    },
+    notToBe: (expectedVal: any) => {
+      if (val === expectedVal) {
+        throw new Error("Equal");
+      } else {
+        return true;
+      }
+    }
   }
+};
+
+/**
+* expect(5).toBe(5); // true
+* expect(5).notToBe(5); // throws "Equal"
+*/
+
+console.log(expect(5).toBe(5))
+console.log(expect(5).notToBe(5))
+
+
+type Mapper = (n: number, i: number) => number;
+
+function map(arr: number[], fn: Mapper): number[] {
+  let result: number[] = [];
+  for (let j = 0; j < arr.length; j++) {
+    result.push(fn(arr[j], j));
+  }
+  return result;
 }
 
-// Fungsi untuk menggandakan nilai dari linked list node
-function duplicateValue(node) {
-  node.val *= 2;
+function plus(n: number, i: number): number {
+  return n + i;
 }
 
-// Membuat linked list
-let node1 = new ListNode(1);
-let node2 = new ListNode(2);
-let node3 = new ListNode(3);
-
-node1.next = node2;
-node2.next = node3;
-
-// Memasukkan linked list ke dalam fungsi
-duplicateValue(node1);
-
-// Melihat hasil perubahan nilai linked list di luar fungsi
-console.log(node1.val); // Output: 2 (nilai node1 berubah)
-console.log(node1.next.val); // Output: 2 (nilai node2 tidak berubah)
-console.log(node1.next.next.val); // Output: 3 (nilai node3 tidak berubah)
+console.log(map([1, 2, 3, 4, 5], plus));
